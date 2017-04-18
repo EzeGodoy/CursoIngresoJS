@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main()
 {
@@ -17,7 +18,7 @@ int main()
     fflush(stdin);
     gets(apellido);
 
-    strcopy(nomape;apellido);
+    strcpy(nomape,apellido);
 
     strcat(nomape,", ");
 
