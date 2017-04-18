@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #define A 3
 
+/** \brief
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 
 
 int main()
@@ -9,10 +16,11 @@ int main()
 
     //tipo_dato identificador[A];
 
-    int edades[A]= {0}, legajos[A], auxEdad, pos, flagMaximo = 0, maxProm, auxLeg,  flagEncontro=0, opcion;
-    float promedios[A], promedio, suma=0;
-    int i;
-    char seguir='s';
+    int edades[A]= {0}, legajos[A], estados[A]= {0}, auxEdad, pos, flagMaximo = 0, maxProm, auxLeg,  flagEncontro=0, opcion;
+    float promedios[A], promedio, suma=0, auxFloat;
+    char nombres[A][50];
+    int i, flag;
+    char seguir='s', respuesta;
 
     /*for(i=0; i<8; i++)
     {
@@ -21,19 +29,34 @@ int main()
 
     do
     {
-        printf("1. Ingreso de datos\n2.Busqueda por legajo\n3.maximo\n4.listar por promedio\n5. Listar todos\n6.salir\n");
+        printf("1. Ingreso de datos\n2.Busqueda por legajo\n3.maximo\n4.listar por promedio\n5. Listar todos\n6. Bajas\n7.Modificaciones\n8.Ordenar\n9.salir\n");
         scanf("%d", &opcion);
         switch(opcion)
         {
         case 1:
+            flag=0;
             for(i=0; i<A; i++)
             {
-                printf("Ingrese legajo: ");
-                scanf("%d", &legajos[i]);
-                printf("Ingrese una edad: ");
-                scanf("%d", &edades[i]);
-                printf("Ingrese promedio: ");
-                scanf("%f", &promedios[i]);
+                if(estados[i]==0)
+                {
+                    printf("Ingrese legajo: ");
+                    scanf("%d", &legajos[i]);
+                    printf("Ingrese nombre: ");
+                    fflush(stdin);
+                    gets(nombres[i]);
+                    printf("Ingrese una edad: ");
+                    scanf("%d", &edades[i]);
+                    printf("Ingrese promedio: ");
+                    scanf("%f", &promedios[i]);
+                    flag=1;
+                    estados[i] = 1;
+                    break;
+                }
+
+            }
+            if(flag==0)
+            {
+                printf("Capacidad agotada!!!");
             }
             break;
         case 2:
@@ -91,17 +114,87 @@ int main()
                     printf("%d\t%d\t%f\n",legajos[i], edades[i], promedios[i]);
                 }
             }
-             //suma=0;
+            suma=0;
             break;
         case 5:
             for(i=0; i<A; i++)
             {
-
+                if(estados[i]==1)
                 printf("%d\t%d\t%f\n",legajos[i], edades[i], promedios[i]);
 
             }
             break;
         case 6:
+
+             printf("Ingrese legajo a buscar: ");
+            scanf("%d", &auxLeg);
+
+
+            for(i=0; i<A; i++)
+            {
+                if(legajos[i]==auxLeg)
+                {
+                    printf("%d\t%d\t%f\n",legajos[i], edades[i], promedios[i]);
+
+                    printf("Esta seguro de eliminar? : ");
+                    respuesta = getche();
+                    if(respuesta=='s')
+                    {
+                        estados[i] = 0;
+                    }
+                    else
+                    {
+                        printf("Accion cancelada por el usuario!");
+                    }
+                    flagEncontro=1;
+                    break;
+                }
+
+
+            }
+            if(flagEncontro==0)
+            {
+                printf("Legajo inexistente");
+            }
+            flagEncontro=0;
+            break;
+        case 7:
+
+             printf("Ingrese legajo a buscar: ");
+            scanf("%d", &auxLeg);
+
+
+            for(i=0; i<A; i++)
+            {
+                if(legajos[i]==auxLeg)
+                {
+                    printf("%d\t%d\t%f\n",legajos[i], edades[i], promedios[i]);
+                    printf("Ingrese el nuevo promedio: ");
+                    scanf("%f", &auxFloat);
+                    printf("Esta seguro de modificar? : ");
+                    respuesta = getche();
+                    if(respuesta=='s')
+                    {
+                        promedios[i] = auxFloat;
+                    }
+                    else
+                    {
+                        printf("Accion cancelada por el usuario!");
+                    }
+                    flagEncontro=1;
+                    break;
+                }
+
+
+            }
+            if(flagEncontro==0)
+            {
+                printf("Legajo inexistente");
+            }
+            flagEncontro=0;
+            break;
+
+        case 9:
             seguir='n';
             break;
 
@@ -109,8 +202,8 @@ int main()
 
 
         }
-    system("pause");
-    system("cls");
+        system("pause");
+        system("cls");
 
     }
     while(seguir=='s');
